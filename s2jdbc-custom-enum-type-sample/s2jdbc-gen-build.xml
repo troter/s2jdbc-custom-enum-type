@@ -1,0 +1,156 @@
+<project name="example-s2jdbc-gen" default="gen-ddl" basedir=".">
+
+  <property name="classpathdir" value="target/classes"/>
+  <property name="rootpackagename" value="jp.troter.sample"/>
+  <property name="entitypackagename" value="entity"/>
+  <property name="entityfilepattern" value="jp/troter/sample/entity/**/*.java"/>
+  <property name="javafiledestdir" value="src/main/java"/>
+  <property name="testjavafiledestdir" value="src/test/java"/>
+  <property name="javafileencoding" value="UTF-8"/>
+  <property name="version" value="latest"/>
+  <property name="sqlfilepattern" value="META-INF/sql/**/*.sql"/>
+  <property name="applyenvtoversion" value="false"/>
+  <property name="uses2junit4" value="false"/>
+  <property name="env" value="ut"/>
+  <property name="jdbcmanagername" value="jdbcManager"/>
+  <condition property="vmarg.encoding" value="-Dfile.encoding=UTF-8" else="">
+    <isset property="eclipse.pdebuild.home"/>
+  </condition>
+
+  <path id="classpath">
+    <pathelement location="${classpathdir}"/>
+    <fileset dir="lib">
+      <exclude name="lib/sources/**"/>
+    </fileset>
+  </path>
+
+  <taskdef resource="s2jdbc-gen-task.properties" classpathref="classpath"/>
+
+  <target name="gen-ddl">
+    <gen-ddl
+      classpathdir="${classpathdir}"
+      rootpackagename="${rootpackagename}"
+      entitypackagename="${entitypackagename}"
+      env="${env}"
+      jdbcmanagername="${jdbcmanagername}"
+      classpathref="classpath">
+        <jvmarg value="${vmarg.encoding}"/>
+    </gen-ddl>
+    <gen-names
+      namesPackageName="${entitypackagename}.names"
+      classpathdir="${classpathdir}"
+      rootpackagename="${rootpackagename}"
+      entitypackagename="${entitypackagename}"
+      javafiledestdir="${javafiledestdir}"
+      javafileencoding="${javafileencoding}"
+      env="${env}"
+      jdbcmanagername="${jdbcmanagername}"
+      classpathref="classpath">
+        <jvmarg value="${vmarg.encoding}"/>
+    </gen-names>
+    <gen-service
+      classpathdir="${classpathdir}"
+      rootpackagename="${rootpackagename}"
+      entitypackagename="${entitypackagename}"
+      javafiledestdir="${javafiledestdir}"
+      javafileencoding="${javafileencoding}"
+      env="${env}"
+      jdbcmanagername="${jdbcmanagername}"
+      classpathref="classpath">
+        <jvmarg value="${vmarg.encoding}"/>
+    </gen-service>
+    <gen-sqlfileconstants
+      classpathdir="${classpathdir}"
+      rootpackagename="${rootpackagename}"
+      javafiledestdir="${javafiledestdir}"
+      javafileencoding="${javafileencoding}"
+      env="${env}"
+      jdbcmanagername="${jdbcmanagername}"
+      classpathref="classpath">
+        <sqlfileset dir="${classpathdir}">
+          <include name="${sqlfilepattern}" />
+        </sqlfileset>
+        <jvmarg value="${vmarg.encoding}"/>
+    </gen-sqlfileconstants>
+    <gen-entitytest
+      classpathdir="${classpathdir}"
+      rootpackagename="${rootpackagename}"
+      entitypackagename="${entitypackagename}"
+      javafiledestdir="${testjavafiledestdir}"
+      javafileencoding="${javafileencoding}"
+      uses2junit4="${uses2junit4}"
+      env="${env}"
+      jdbcmanagername="${jdbcmanagername}"
+      classpathref="classpath">
+        <jvmarg value="${vmarg.encoding}"/>
+    </gen-entitytest>
+    <gen-servicetest
+      classpathdir="${classpathdir}"
+      rootpackagename="${rootpackagename}"
+      javafiledestdir="${testjavafiledestdir}"
+      javafileencoding="${javafileencoding}"
+      uses2junit4="${uses2junit4}"
+      env="${env}"
+      jdbcmanagername="${jdbcmanagername}"
+      classpathref="classpath">
+        <jvmarg value="${vmarg.encoding}"/>
+    </gen-servicetest>
+    <gen-sqlfiletest
+      classpathdir="${classpathdir}"
+      rootpackagename="${rootpackagename}"
+      javafiledestdir="${testjavafiledestdir}"
+      javafileencoding="${javafileencoding}"
+      uses2junit4="${uses2junit4}"
+      env="${env}"
+      jdbcmanagername="${jdbcmanagername}"
+      classpathref="classpath">
+        <sqlfileset dir="${classpathdir}">
+          <include name="${sqlfilepattern}" />
+        </sqlfileset>
+        <jvmarg value="${vmarg.encoding}"/>
+    </gen-sqlfiletest>
+  </target>
+
+  <target name="migrate">
+    <migrate
+      classpathdir="${classpathdir}"
+      rootpackagename="${rootpackagename}"
+      entitypackagename="${entitypackagename}"
+      applyenvtoversion="${applyenvtoversion}"
+      version="${version}"
+      env="${env}"
+      jdbcmanagername="${jdbcmanagername}"
+      classpathref="classpath">
+        <jvmarg value="${vmarg.encoding}"/>
+    </migrate>
+    <refresh projectName="${projectname}"/>
+  </target>
+
+  <target name="rollback">
+    <migrate
+      classpathdir="${classpathdir}"
+      rootpackagename="${rootpackagename}"
+      entitypackagename="${entitypackagename}"
+      applyenvtoversion="${applyenvtoversion}"
+      version="previous"
+      env="${env}"
+      jdbcmanagername="${jdbcmanagername}"
+      classpathref="classpath">
+        <jvmarg value="${vmarg.encoding}"/>
+    </migrate>
+  </target>
+
+  <target name="dump">
+    <dump-data
+      classpathdir="${classpathdir}"
+      rootpackagename="${rootpackagename}"
+      applyenvtoversion="${applyenvtoversion}"
+      entitypackagename="${entitypackagename}"
+      env="${env}"
+      jdbcmanagername="${jdbcmanagername}"
+      classpathref="classpath">
+        <jvmarg value="${vmarg.encoding}"/>
+    </dump-data>
+  </target>
+
+</project>
