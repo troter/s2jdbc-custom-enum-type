@@ -19,6 +19,7 @@
 
  <!-- Build Settings -->
  <build>
+  <finalName>${pom.artifactId}</finalName>
   <plugins>
     <!-- maven-eclipse-plugin -->
     <plugin>
