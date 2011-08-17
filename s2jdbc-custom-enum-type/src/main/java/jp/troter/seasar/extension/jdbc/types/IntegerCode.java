@@ -21,7 +21,7 @@ import org.seasar.framework.beans.factory.BeanDescFactory;
 
 public interface IntegerCode {
 
-    public static final String FACTORY_METHOD_VALUE_OF = "valueOf";
+    public static final String FACTORY_METHOD_OF = "of";
     public static final String PROPERTY_CODE = "code";
 
     /**
@@ -37,16 +37,16 @@ public interface IntegerCode {
         public static <T extends Enum<T>> void assertFactoryMethod(final Class<T> enumClass) {
             try {
                 BeanDesc b = BeanDescFactory.getBeanDesc(enumClass);
-                b.getMethod(FACTORY_METHOD_VALUE_OF, new Class[]{int.class});
+                b.getMethod(FACTORY_METHOD_OF, new Class[]{int.class});
             } catch (MethodNotFoundRuntimeException e) {
-                String m = String.format("[%s]を継承したクラス[%s]はスタティックメソッド[%s]を実装する必要があります。", StringCode.class.getName(), enumClass.getName(), FACTORY_METHOD_VALUE_OF);
+                String m = String.format("[%s]を継承したクラス[%s]はスタティックメソッド[%s]を実装する必要があります。", StringCode.class.getName(), enumClass.getName(), FACTORY_METHOD_OF);
                 throw new IllegalArgumentException(m, e);
             }
         }
 
-        public static <T extends Enum<T>> T valueOf(final Class<T> enumClass, int code) {
+        public static <T extends Enum<T>> T of(final Class<T> enumClass, int code) {
             BeanDesc b = BeanDescFactory.getBeanDesc(enumClass);
-            return enumClass.cast(b.invoke(null, FACTORY_METHOD_VALUE_OF, new Object[]{code}));
+            return enumClass.cast(b.invoke(null, FACTORY_METHOD_OF, new Object[]{code}));
         }
 
         public static <T extends Enum<T>> int getCode(final Class<T> enumClass, Object value) {

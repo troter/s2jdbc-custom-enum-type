@@ -57,7 +57,7 @@ public class EnumStringType<T extends Enum<T>> extends AbstractValueType {
             return null;
         }
         if (StringCode.class.isAssignableFrom(enumClass)) {
-            return StringCode.Helper.valueOf(enumClass, name);
+            return StringCode.Helper.of(enumClass, name);
         }
         return Enum.valueOf(enumClass, name);
     }

@@ -116,7 +116,7 @@ public class EnumIntegerType<T extends Enum<T>> extends AbstractValueType {
      */
     protected T toEnum(int ordinal) {
         if (IntegerCode.class.isAssignableFrom(enumClass)) {
-            return IntegerCode.Helper.valueOf(enumClass, ordinal);
+            return IntegerCode.Helper.of(enumClass, ordinal);
         }
         return enumClass.getEnumConstants()[ordinal];
     }
