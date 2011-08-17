@@ -19,7 +19,7 @@ public enum ImplementedIntegerCode implements IntegerCode {
         return code;
     }
 
-    public static ImplementedIntegerCode codeOf(int code) {
+    public static ImplementedIntegerCode of(int code) {
         for (ImplementedIntegerCode e : values()) {
             if (e.getCode() == code) {
                 return e;

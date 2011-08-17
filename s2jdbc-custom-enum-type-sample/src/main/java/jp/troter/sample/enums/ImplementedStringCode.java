@@ -18,7 +18,7 @@ public enum ImplementedStringCode implements StringCode {
         return code;
     }
 
-    public static ImplementedStringCode codeOf(String code) {
+    public static ImplementedStringCode of(String code) {
         for (ImplementedStringCode e : values()) {
             if (e.getCode().equals(code)) {
                 return e;

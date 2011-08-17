@@ -92,6 +92,14 @@
     </plugins>
   </build>
 
+  <repositories>
+    <repository>
+      <id>maven.seasar.org</id>
+      <name>The Seasar Foundation Maven2 Repository</name>
+      <url>http://maven.seasar.org/maven2</url>
+    </repository>
+  </repositories>
+
   <!-- Dependency Settings -->
   <dependencies>
     <!-- JUnit4 -->
@@ -156,7 +164,7 @@
     <dependency>
       <groupId>jp.troter</groupId>
       <artifactId>s2jdbc-custom-enum-type</artifactId>
-      <version>1.0.0</version>
+      <version>1.0.1-SNAPSHOT</version>
     </dependency>
 
     <dependency>
