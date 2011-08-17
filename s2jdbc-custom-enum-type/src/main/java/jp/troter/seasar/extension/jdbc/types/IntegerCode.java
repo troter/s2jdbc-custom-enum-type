@@ -21,7 +21,7 @@ import org.seasar.framework.beans.factory.BeanDescFactory;
 
 public interface IntegerCode {
 
-    public static final String FACTORY_METHOD_NAME = "codeOf";
+    public static final String FACTORY_METHOD_VALUE_OF = "valueOf";
     public static final String PROPERTY_CODE = "code";
 
     /**
@@ -34,22 +34,22 @@ public interface IntegerCode {
      */
     public static class Helper {
 
-        public static void assertFactoryMethod(final Class<? extends Enum> enumClass) {
+        public static <T extends Enum<T>> void assertFactoryMethod(final Class<T> enumClass) {
             try {
                 BeanDesc b = BeanDescFactory.getBeanDesc(enumClass);
-                b.getMethod(FACTORY_METHOD_NAME, new Class[]{int.class});
+                b.getMethod(FACTORY_METHOD_VALUE_OF, new Class[]{int.class});
             } catch (MethodNotFoundRuntimeException e) {
-                String m = String.format("[%s]を継承したクラス[%s]はスタティックメソッド[%s]を実装する必要があります。", StringCode.class.getName(), enumClass.getName(), FACTORY_METHOD_NAME);
+                String m = String.format("[%s]を継承したクラス[%s]はスタティックメソッド[%s]を実装する必要があります。", StringCode.class.getName(), enumClass.getName(), FACTORY_METHOD_VALUE_OF);
                 throw new IllegalArgumentException(m, e);
             }
         }
 
-        public static Enum codeOf(final Class<? extends Enum> enumClass, int code) {
+        public static <T extends Enum<T>> T valueOf(final Class<T> enumClass, int code) {
             BeanDesc b = BeanDescFactory.getBeanDesc(enumClass);
-            return (Enum)b.invoke(null, FACTORY_METHOD_NAME, new Object[]{code});
+            return enumClass.cast(b.invoke(null, FACTORY_METHOD_VALUE_OF, new Object[]{code}));
         }
 
-        public static int getCode(final Class<? extends Enum> enumClass, Object value) {
+        public static <T extends Enum<T>> int getCode(final Class<T> enumClass, Object value) {
             BeanDesc b = BeanDescFactory.getBeanDesc(enumClass);
             return (Integer)b.getPropertyDesc(PROPERTY_CODE).getValue(value);
         }

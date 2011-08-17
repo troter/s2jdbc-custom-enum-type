@@ -24,18 +24,16 @@ import java.sql.Types;
 import org.seasar.extension.jdbc.types.AbstractValueType;
 import org.seasar.extension.jdbc.util.BindVariableUtil;
 
-public class EnumStringType extends AbstractValueType {
+public class EnumStringType<T extends Enum<T>> extends AbstractValueType {
 
-	@SuppressWarnings("unchecked")
-    private final Class<? extends Enum> enumClass;
+    private final Class<T> enumClass;
 
 	/**
      * インスタンスを構築します。
      * 
      * @param enumClass
      */
-    @SuppressWarnings("unchecked")
-    public EnumStringType(Class<? extends Enum> enumClass) {
+    public EnumStringType(Class<T> enumClass) {
         super(Types.VARCHAR);
         this.enumClass = enumClass;
         if (StringCode.class.isAssignableFrom(enumClass)) {
@@ -54,13 +52,12 @@ public class EnumStringType extends AbstractValueType {
      * @param name
      * @return {@link Enum}
      */
-    @SuppressWarnings("unchecked")
-    protected Enum toEnum(String name) {
+    protected T toEnum(String name) {
         if (name == null) {
             return null;
         }
         if (StringCode.class.isAssignableFrom(enumClass)) {
-            return StringCode.Helper.codeOf(enumClass, name);
+            return StringCode.Helper.valueOf(enumClass, name);
         }
         return Enum.valueOf(enumClass, name);
     }
@@ -85,7 +82,6 @@ public class EnumStringType extends AbstractValueType {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public void bindValue(PreparedStatement ps, int index, Object value)
             throws SQLException {
 
@@ -97,7 +93,6 @@ public class EnumStringType extends AbstractValueType {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public void bindValue(CallableStatement cs, String parameterName,
             Object value) throws SQLException {
 

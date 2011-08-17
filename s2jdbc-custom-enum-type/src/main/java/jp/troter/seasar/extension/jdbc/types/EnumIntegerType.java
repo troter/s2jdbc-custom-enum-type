@@ -24,18 +24,16 @@ import java.sql.Types;
 import org.seasar.extension.jdbc.types.AbstractValueType;
 import org.seasar.extension.jdbc.util.BindVariableUtil;
 
-public class EnumIntegerType extends AbstractValueType {
+public class EnumIntegerType<T extends Enum<T>> extends AbstractValueType {
 
-    @SuppressWarnings("unchecked")
-    private final Class<? extends Enum> enumClass;
+    private final Class<T> enumClass;
 
     /**
      * インスタンスを構築します。
      * 
      * @param enumClass
      */
-    @SuppressWarnings("unchecked")
-    public EnumIntegerType(Class<? extends Enum> enumClass) {
+    public EnumIntegerType(Class<T> enumClass) {
         super(Types.INTEGER);
         this.enumClass = enumClass;
         if (IntegerCode.class.isAssignableFrom(enumClass)) {
@@ -82,7 +80,6 @@ public class EnumIntegerType extends AbstractValueType {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public void bindValue(PreparedStatement ps, int index, Object value)
             throws SQLException {
         if (value == null) {
@@ -93,7 +90,6 @@ public class EnumIntegerType extends AbstractValueType {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public void bindValue(CallableStatement cs, String parameterName,
             Object value) throws SQLException {
         if (value == null) {
@@ -118,10 +114,9 @@ public class EnumIntegerType extends AbstractValueType {
      *            序数
      * @return {@link Enum}
      */
-    @SuppressWarnings("unchecked")
-    protected Enum toEnum(int ordinal) {
+    protected T toEnum(int ordinal) {
         if (IntegerCode.class.isAssignableFrom(enumClass)) {
-            return IntegerCode.Helper.codeOf(enumClass, ordinal);
+            return IntegerCode.Helper.valueOf(enumClass, ordinal);
         }
         return enumClass.getEnumConstants()[ordinal];
     }
